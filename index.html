@@ -207,6 +207,12 @@
                             progress.value = progressPercent
                         }
                     }
+
+                    // Xử lý khi tua song
+                    progress.onchange = function(e) {
+                        const seekTime = e.target.value / 100 * audio.duration
+                        audio.currentTime = seekTime
+                    }
                 }
             },
             loadCurrentSong: function() {
