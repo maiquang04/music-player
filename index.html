@@ -76,12 +76,14 @@
         const playBtn = $('.btn-toggle-play')
         const prevBtn = $('.btn-prev')
         const nextBtn = $('.btn-next')
+        const randomBtn = $('.btn-random')
         const player = $('.player')
         const progress = $('#progress')
 
         const app = {
             currentIndex: 0,
             isPlaying: false,
+            isRandom: false,
             songs: [
                 {
                     name: 'Demons',
@@ -231,14 +233,31 @@
 
                 // Xử lý khi next song
                 nextBtn.onclick = function() {
+                    if (_this.isRandom) {
+                        _this.playRandomSong()
+                    }
                     _this.nextSong()
                     audio.play()
                 }
 
                 // Xử lý khi prev song
                 prevBtn.onclick = function() {
+                    if (_this.isRandom) {
+                        _this.playRandomSong()
+                    }
                     _this.prevSong()
                     audio.play()
+                }
+
+                // Xử lý khi random song
+                randomBtn.onclick = function() {
+                    _this.isRandom = !_this.isRandom
+                    randomBtn.classList.toggle('active', _this.isRandom)
+                }
+
+                // Xử lý khi audio ended
+                audio.onended = function() {
+                    
                 }
             },
             loadCurrentSong: function() {
@@ -259,6 +278,13 @@
                     this.currentIndex = this.songs.length - 1
                 }
                 this.loadCurrentSong()
+            },
+            playRandomSong: function() {
+                let newIndex
+                do {
+                    newIndex = Math.floor(Math.random() * this.songs.length)
+                } while (newIndex === this.currentIndex)
+                this.currentIndex = newIndex
             },
             start: function() {
                 // Định nghĩa các thuộc tính cho object
