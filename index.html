@@ -172,6 +172,16 @@
                 const _this = this
                 const cdWidth = cd.offsetWidth
 
+                // Xử lý CD quay
+                const cdThumbAnimate = cdThumb.animate([
+                    { transform: "rotate(360deg)" }
+                ], {
+                    // duration: audio.duration > 0 ? (audio.duration * 1000) : 0,
+                    duration: 10000,
+                    iterations: Infinity
+                })
+                cdThumbAnimate.pause()
+
                 // Xử lý phóng to / thu nhỏ
                 document.onscroll = function() {
                     const scrollTop = window.scrollY || document.documentElement.scrollTop
@@ -192,12 +202,14 @@
                     audio.onplay = function() {
                         player.classList.add('playing')
                         _this.isPlaying = true
+                        cdThumbAnimate.play()
                     }
 
                     // Khi song được pause
                     audio.onpause = function() {
                         player.classList.remove('playing')
                         _this.isPlaying = false
+                        cdThumbAnimate.pause()  
                     }
 
                     // Khi tiến độ bài hát bị thay đổi
